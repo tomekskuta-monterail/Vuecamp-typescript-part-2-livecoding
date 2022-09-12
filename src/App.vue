@@ -1,29 +1,68 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+<script>
+import { defineComponent } from "vue";
+import SearchableSelect from "@/components/SearchableSelect.vue";
+
+const options = [
+  { value: 1, label: "Harry Potter" },
+  { value: 2, label: "Hermiona Granger" },
+  { value: 3, label: "Ron Wesley" },
+  { value: 4, label: "Draco Malfoy" },
+  { value: 5, label: "Neville Longbottom" },
+];
+
+export default defineComponent({
+  components: { SearchableSelect },
+  data() {
+    return {
+      searchQuery: "",
+      selectedOption: null,
+    };
+  },
+  options,
+});
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div>
+    <header>
+      <img
+        alt="Vue logo"
+        class="logo"
+        src="@/assets/logo.svg"
+        width="125"
+        height="125"
+      />
+    </header>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <div class="select-wrapper">
+      <div class="selected-option">
+        {{ selectedOption?.label }}
+      </div>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+      <SearchableSelect
+        placeholder="Select character"
+        v-model:searchQuery="searchQuery"
+        v-model:selectedOption="selectedOption"
+        :options="$options.options"
+      />
     </div>
-  </header>
-
-  <RouterView />
+  </div>
 </template>
 
 <style scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;
+}
+
+.select-wrapper {
+  margin-top: 100px;
+}
+
+.selected-option {
+  margin-bottom: 30px;
+  color: white;
+  font-size: 24px;
 }
 
 .logo {
@@ -58,7 +97,6 @@ nav a:first-of-type {
 
 @media (min-width: 1024px) {
   header {
-    display: flex;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
   }
@@ -68,7 +106,6 @@ nav a:first-of-type {
   }
 
   header .wrapper {
-    display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
   }
