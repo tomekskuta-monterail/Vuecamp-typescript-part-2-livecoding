@@ -21,21 +21,38 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
 
 import List from "@/components/SelectList.vue";
 
-let timeoutId;
+let timeoutId: number;
+
+export type Option = {
+  value: string;
+  label: string;
+};
 
 export default defineComponent({
   components: { List },
 
   props: {
-    placeholder: String,
-    searchQuery: String,
-    selectedOption: Object,
-    options: Array,
+    placeholder: {
+      type: String,
+      default: "",
+    },
+    searchQuery: {
+      type: String,
+      default: "",
+    },
+    selectedOption: {
+      type: Object as PropType<Option>,
+      default: null,
+    },
+    options: {
+      type: Array as PropType<Option[]>,
+      default: () => [],
+    },
   },
   emits: ["update:selectedOption", "update:searchQuery"],
 
@@ -67,14 +84,14 @@ export default defineComponent({
       });
     },
 
-    onSearchChange: function (event) {
-      const searchQuery = event.target.value;
+    onSearchChange: function (event: Event) {
+      const searchQuery = (event.target as HTMLInputElement).value;
 
       this.$emit("update:searchQuery", searchQuery);
     },
 
     closeListAndFocusInput() {
-      this.$refs.input?.focus();
+      (this.$refs.input as HTMLInputElement).focus();
       this.isOpen = false;
     },
   },

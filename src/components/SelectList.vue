@@ -21,25 +21,30 @@
   </ul>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+
+import type { Option } from "./SearchableSelect.vue";
 
 const LIST_MARGIN_BOTTOM = 20;
 
 export default defineComponent({
   props: {
     options: {
-      type: Array,
+      type: Array as PropType<Option[]>,
       default: () => [],
     },
-    selectedOption: Object,
+    selectedOption: {
+      type: Object as PropType<Option>,
+      default: null,
+    },
   },
 
   emits: ["choose-option", "close-list", "close-list-and-focus-input"],
 
   data() {
     return {
-      listMaxHeight: 0,
+      listMaxHeight: "0px",
     };
   },
 
@@ -47,7 +52,9 @@ export default defineComponent({
     await this.$nextTick();
 
     const windowHeight = window.innerHeight;
-    const listDimensions = this.$refs.list?.getBoundingClientRect();
+    const listDimensions = (
+      this.$refs.list as HTMLUListElement
+    ).getBoundingClientRect();
 
     this.listMaxHeight = `${
       windowHeight - listDimensions.top - LIST_MARGIN_BOTTOM
@@ -55,11 +62,11 @@ export default defineComponent({
   },
 
   methods: {
-    clickItemOnPressSpace(event) {
-      event.target.click();
+    clickItemOnPressSpace(event: Event) {
+      (event.target as HTMLLIElement).click();
     },
 
-    clickItem(item) {
+    clickItem(item: Option) {
       this.$emit("choose-option", item);
       this.$emit("close-list");
     },

@@ -1,21 +1,27 @@
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
-import SearchableSelect from "@/components/SearchableSelect.vue";
 
-const options = [
-  { value: 1, label: "Harry Potter" },
-  { value: 2, label: "Hermiona Granger" },
-  { value: 3, label: "Ron Wesley" },
-  { value: 4, label: "Draco Malfoy" },
-  { value: 5, label: "Neville Longbottom" },
+import SearchableSelect, { Option } from "@/components/SearchableSelect.vue";
+
+type Data = {
+  searchQuery: string;
+  selectedOption: Option | undefined;
+};
+
+const options: Option[] = [
+  { value: "1", label: "Harry Potter" },
+  { value: "2", label: "Hermiona Granger" },
+  { value: "3", label: "Ron Wesley" },
+  { value: "4", label: "Draco Malfoy" },
+  { value: "5", label: "Neville Longbottom" },
 ];
 
 export default defineComponent({
   components: { SearchableSelect },
-  data() {
+  data(): Data {
     return {
       searchQuery: "",
-      selectedOption: null,
+      selectedOption: undefined,
     };
   },
   options,
